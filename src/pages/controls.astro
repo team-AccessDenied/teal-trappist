@@ -1,0 +1,29 @@
+---
+import Layouts from "./layouts/Base-Layout.astro"
+---
+<Layouts page="Controls">
+    <div class="control-wrapper">
+        <div class="control-group">
+          <!-- LED Toggle -->
+          <div class="led-control-container">
+            <button id="ledBtn" class="toggle-btn">TURN ON</button>
+            <p class="toggle-label">LED</p>
+          </div>
+    
+          <!-- BUZZER Toggle -->
+          <div class="led-control-container">
+            <button id="buzzerBtn" class="toggle-btn">TURN ON</button>
+            <p class="toggle-label">BUZZER</p>
+          </div>
+    
+          <!-- FAN Toggle -->
+          <div class="led-control-container">
+            <button id="fanBtn" class="toggle-btn">TURN ON</button>
+            <p class="toggle-label">FAN</p>
+          </div>
+        </div>
+      </div>
+
+      <script src="/scripts/control.js" defer></script>
+    
+</Layouts>

@@ -1,0 +1,50 @@
+---
+// src/layouts/base.layout.astro
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css'; // ✅ or 'styles4.css' depending on your actual filename
+
+const { pageTitle, page } = Astro.props;
+
+
+let overlayClass = '';
+if (page === 'Contact' || page === 'About' || page === 'Blog' || page === 'Gallery') {
+  overlayClass = 'dark-overlay';
+} else if (page === 'home') {
+  overlayClass = 'light-overlay';
+}
+
+
+
+let pageClass = '';
+if (page === 'led-control') {
+  pageClass = 'led-control-page'; // Specific class for LED control page
+}
+---
+<html lang="en" class={page}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{page}</title>
+    <script is:inline src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  </head>
+  <body>
+    <Header />
+    <div class="background-wrapper">
+      <div class={`background-overlay ${overlayClass}`}></div>
+
+      <div class="centered-name">{pageTitle}</div>
+
+      <div class="page-content">
+        <main class="content-area">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+
+    <!-- <script src="/scripts/events.js" defer></script> -->
+  </body>
+</html>

@@ -1,0 +1,21 @@
+---
+// src/components/Header.astro
+---
+
+<header>
+    <a href="/dashboard" class="dashboard-link">Dashboard</a>
+    
+    <h1 class="project-title">WHO'S <span class="highlight">IN?</span></h1>
+    
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+    <script type="module" src="/scripts/logout.js" defer></script>
+    <style>
+       .dashboard-link {
+      color: inherit;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+      font-size: 1.1rem
+    }
+    </style>
+  </header>
