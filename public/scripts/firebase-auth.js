@@ -181,11 +181,11 @@ window.addEventListener("DOMContentLoaded", () => {
         await createUserWithEmailAndPassword(auth, email, password);
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userName", name);
-        location.href = import.meta.env.BASE_URL + "/dashboard";
+        location.href = "/teal-trappist/dashboard";
       } else if (mode === "login") {
         await signInWithEmailAndPassword(auth, email, password);
         localStorage.setItem("userEmail", email);
-        location.href = import.meta.env.BASE_URL + "/dashboard";
+        location.href = "/teal-trappist/dashboard";
       }
     } catch (error) {
       if (mode === "login") {
