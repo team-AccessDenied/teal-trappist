@@ -5,7 +5,7 @@ import Layout from "./layouts/Base-Layout.astro";
 <Layout page="User-Info">
 
     <div class="user-info container">
-        <script type="module" src="/scripts/user-info.js"></script>
+        <script type="module" src={import.meta.env.BASE_URL + "/scripts/user-info.js"}></script>
 
     </div>
     
