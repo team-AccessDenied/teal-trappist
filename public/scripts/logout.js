@@ -21,7 +21,7 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
   signOut(auth)
     .then(() => {
       localStorage.removeItem("userEmail");
-      location.href = "/";
+      location.href = import.meta.env.BASE_URL + "/";
     })
     .catch((error) => {
       console.error("Logout error:", error);
