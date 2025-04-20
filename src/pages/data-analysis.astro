@@ -1,0 +1,165 @@
+---
+import Layout from './layouts/Base-Layout.astro';
+---
+
+<Layout page="Data-Control">
+  <main class="dashboard-main">
+    <div class="dashboard-container">
+      <!-- People Counter Display -->
+      <div class="counter-card">
+        <h2>People in Room</h2>
+        <div id="peopleCounter" class="counter-value">0</div>
+        <p class="counter-label">Current Occupancy</p>
+      </div>
+
+      <!-- Count of People Graph -->
+      <div class="graph-section">
+        <h3>Count of People in Room</h3>
+        <div class="graph-container">
+          <iframe 
+            width="100%" 
+            height="220" 
+            style="border: 1px solid #cccccc;"
+            src="https://thingspeak.com/channels/2918587/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Average Count Graph -->
+      <div class="graph-section">
+        <h3>Average Count of People</h3>
+        <div class="graph-container">
+          <iframe 
+            width="100%" 
+            height="220" 
+            style="border: 1px solid #cccccc;"
+            src="https://thingspeak.com/channels/2918587/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Fetch people count from ThingSpeak API
+    async function fetchPeopleCount() {
+      try {
+        const response = await fetch('https://api.thingspeak.com/channels/2918587/fields/2/last.json?api_key=MJLCLFGX0W3M5E1O');
+        const data = await response.json();
+        return parseInt(data.field2) || 0;
+      } catch (error) {
+        console.error('Error fetching people count:', error);
+        return 0;
+      }
+    }
+
+    // Update the counter display
+    async function updateCounter() {
+      const count = await fetchPeopleCount();
+      document.getElementById('peopleCounter').textContent = count;
+      
+      const counterElement = document.getElementById('peopleCounter');
+      if (count > 5) {
+        counterElement.style.color = '#ff0000';
+        counterElement.style.fontWeight = 'bold';
+      } else {
+        counterElement.style.color = '#00aa00';
+        counterElement.style.fontWeight = 'normal';
+      }
+    }
+
+    // Initial update and set interval
+    updateCounter();
+    setInterval(updateCounter, 15000);
+
+    // Ensure content doesn't push beyond viewport
+    function adjustLayout() {
+      const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+      const footerHeight = document.querySelector('footer')?.offsetHeight || 0;
+      const main = document.querySelector('.dashboard-main');
+      
+      if (main) {
+        main.style.minHeight = `calc(100vh - ${headerHeight + footerHeight}px)`;
+        main.style.padding = '20px 0';
+      }
+    }
+
+    // Run on load and resize
+    window.addEventListener('load', adjustLayout);
+    window.addEventListener('resize', adjustLayout);
+  </script>
+
+  <style>
+    .dashboard-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .dashboard-container {
+      width: 90%;
+      max-width: 550px;
+      margin: 0 auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .counter-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .counter-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0.4rem 0;
+      transition: color 0.3s ease;
+    }
+
+    .counter-label {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .graph-section {
+      background: white;
+      border-radius: 8px;
+      padding: 0.8rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .graph-section h3 {
+      margin: 0 0 0.8rem 0;
+      text-align: center;
+      color: #333;
+      font-size: 1rem;
+    }
+
+    .graph-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    iframe {
+      border-radius: 6px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @media (max-height: 700px) {
+      iframe {
+        height: 180px;
+      }
+      .counter-value {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</Layout>
